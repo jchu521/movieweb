@@ -1,0 +1,21 @@
+const  API_VERSION = 3;
+const constants = {
+  headers:
+  {
+    "Content-Type": "application/json",
+    "Authorization": 'whatever-you-want',
+  },
+
+  SEARCH_MOVIE_BY_NAME: 'SEARCH_MOVIE_BY_NAME',
+  
+  API_KEY: '149303c5a88a0b233820a85576006085',
+  URL: `https://api.themoviedb.org/${API_VERSION}/`,
+  Image_URL: 'https://image.tmdb.org/t/p/original',
+  Youtube_URL: 'https://www.youtube.com/watch?v=',
+
+  parseResponse: response => response.json(),
+  logError: error => console.log(error),
+
+}
+
+export default constants;
