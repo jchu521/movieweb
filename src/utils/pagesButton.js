@@ -37,7 +37,6 @@ class PagesButton extends Component {
   }
 
   render() {
-    console.log(this);
     return (
       <Row>
         <ButtonGroup>

@@ -6,7 +6,8 @@ export default (state={movies:[]}, action) => {
 
   switch (action.type) {
     case C.GET_MOVIES:
-      if(movies.length === 0){
+    console.log(movies);
+      if(movies.total_results === 0){
         return {movies: movies, message:'Not Found'}
       }else{
         return {movies: movies, message: 'Found', query, search}

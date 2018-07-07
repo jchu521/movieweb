@@ -2,16 +2,22 @@ import React, { Component } from 'react';
 import MoviesList from './MoviesList';
 import Menu from './Menu';
 import { connect } from 'react-redux';
+import { Route, Switch  } from 'react-router-dom';
 
 class App extends Component {
 
   render() {
-    const { movies } = this.props.movies;
     return (
-      <div>
+      <div >
         <Menu />
-        <MoviesList />
-      </div>
+          <Switch>
+            <Route exact path='/' />
+            <Route
+              path="/movies"
+              component={MoviesList}
+            />
+          </Switch>
+      </div >
     );
   }
 }
@@ -19,6 +25,5 @@ class App extends Component {
 const mapStateToProps = (state)=>({
   ...state
 })
-
 
 export default connect(mapStateToProps)(App);

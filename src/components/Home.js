@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import * as actions from '../actions/index';
 import { bindActionCreators } from 'redux';
 
-class MoviesList extends Component {
+class Home extends Component {
 
   state = {
     isReady: false,
@@ -73,7 +73,6 @@ class MoviesList extends Component {
   render() {
     const { isReady, movie, isShow, show, videos } = this.state;
     const { search } = this.props.movies;
-    console.log(this);
 
     return (
       <Well className="App">
@@ -188,4 +187,4 @@ const mapDispatchToProps = (dispatch) =>{
   return bindActionCreators(actions,dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MoviesList);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

@@ -4,8 +4,6 @@ import {
   Navbar,
   Nav,
   NavItem,
-  NavDropdown,
-  MenuItem,
   FormGroup,
   FormControl,
   InputGroup,
@@ -15,6 +13,7 @@ import {
 import * as actions from '../actions/index';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 class Menu extends Component {
 
@@ -42,17 +41,18 @@ class Menu extends Component {
   }
 
   render() {
+    console.log(this);
     return (
       <Navbar inverse collapseOnSelect>
         <Navbar.Header>
           <Navbar.Brand>
-            <a href="#brand">MovieDB</a>
+            <Link  to="/">MovieDB</Link>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav>
-            <NavItem eventKey={1} href="#">Movies</NavItem>
+            <NavItem  componentClass={Link}  href="/movies" to="/Movies" eventKey={1} >Movies</NavItem>
             <NavItem eventKey={2} href="#">TV Shows</NavItem>
           </Nav>
           <Navbar.Form pullRight>
