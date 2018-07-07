@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import '../App.css';
-import { getNowPlaying, getMovie, getUpcoming, getMovieVideos } from '../utils/moviesAPI';
+import { getMovie, getMovieVideos } from '../utils/moviesAPI';
+import PagesButton from '../utils/pagesButton';
 import { Well, Row, Col, Button, Modal, ButtonGroup } from 'react-bootstrap';
 import C from '../constants';
+import { connect } from 'react-redux';
+import * as actions from '../actions/index';
+import { bindActionCreators } from 'redux';
 
-class CurrentOrUpcmoingMovies extends Component {
+class MoviesList extends Component {
 
   state = {
     isReady: false,
     show:false,
-    movies: null,
     movie: null,
     genres: null,
     isShow: true,
@@ -17,13 +20,17 @@ class CurrentOrUpcmoingMovies extends Component {
   }
 
   componentDidMount(){
-    getNowPlaying().then( (data) =>
-      this.setState({
-        movies: data,
-        isReady: true
-      })
-    );
+    this.props.getNowPlaying();
   }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.movies.message ==='Not Found'){
+      this.setState({isReady: false})
+    }else if(nextProps.movies.message ==='Found'){
+      this.setState({isReady: true})
+    }
+  }
+
   handleClose = () => {
     this.setState({
       movie: null,
@@ -50,49 +57,45 @@ class CurrentOrUpcmoingMovies extends Component {
   handleGetMovies = (type) => {
     switch (type) {
       case 'Now':
-        getNowPlaying().then( (data) =>
-          this.setState({
-            movies: data,
-            isReady: true,
-            isShow: true,
-          })
-        );
+        this.props.getNowPlaying();
+        this.setState({isShow: true})
         break;
       case 'Coming':
-        getUpcoming().then( (data) =>
-          this.setState({
-            movies: data,
-            isReady: true,
-            isShow: false,
-          })
-        );
+        this.props.getUpcoming();
+        this.setState({isShow: false})
         break
       default:
-        getNowPlaying().then( (data) =>
-          this.setState({
-            movies: data,
-            isReady: true,
-            isShow: true,
-          })
-        );
+        this.props.getNowPlaying();
         break;
     }
   }
 
   render() {
     const { isReady, movie, isShow, show, videos } = this.state;
-    console.log(this.state);
+    const { search } = this.props.movies;
+    console.log(this);
 
     return (
       <Well className="App">
-        <ButtonGroup style={{ paddingBottom: 20}}>
-          <Button bsStyle={ isShow ? 'primary' : 'default' } onClick={() => this.handleGetMovies('Now')}>Now Showing</Button>
-          <Button bsStyle={ isShow ? 'default' : 'primary' } onClick={() => this.handleGetMovies('Coming')}>Coming Soon</Button>
-        </ButtonGroup>
+        {search ==false &&
+          <Row style={{ paddingBottom: 20}}>
+            <Col xs={1}>
+              <ButtonGroup>
+                <Button>asdf</Button>
+              </ButtonGroup>
+            </Col>
+            <Col xs={6} xsOffset={2}>
+          <ButtonGroup >
+            <Button bsStyle={ isShow ? 'primary' : 'default' } onClick={() => this.handleGetMovies('Now')}>Now Showing</Button>
+            <Button bsStyle={ isShow ? 'default' : 'primary' } onClick={() => this.handleGetMovies('Coming')}>Coming Soon</Button>
+          </ButtonGroup>
+          </Col>
+          </Row>
+        }
         <Row>
           {
-            (isReady) && this.state.movies.results.map(movie =>
-              <Col style={{ paddingBottom: 80}} xs={12} sm={4} md={3} key={movie.id}>
+            (isReady && this.props.movies.movies.success !== false) && this.props.movies.movies.results.map(movie =>
+              <Col style={{ paddingBottom: 80}} xs={12} sm={4} md={3} lg={2} key={movie.id}>
                 <Button style={{width:'100%'}} onClick={() => this.handleShow(movie.id)}>
                   <h6>{movie.title}</h6>
                   {movie.poster_path !== null ?
@@ -116,6 +119,9 @@ class CurrentOrUpcmoingMovies extends Component {
             )
           }
         </Row>
+        {(isReady && this.props.movies.movies.total_pages !==1) &&
+          <PagesButton isShowing={this.state.isShow}/>
+        }
         {(movie !== null) &&
           <Modal show={show} onHide={this.handleClose} bsSize="large">
             <Modal.Header closeButton>
@@ -141,14 +147,20 @@ class CurrentOrUpcmoingMovies extends Component {
                 </Col>
                 <Col xs={6}>
                   <h6>Release Date: {movie.release_date}</h6>
-                  <h6>Genres: {movie.genres.map( data =>
-                    data.name
-                  ).join(', ')}</h6>
+                  {movie.genres.length !==0 &&
+                    <h6>Genres: {movie.genres.map( data =>
+                      data.name
+                    ).join(', ')}</h6>
+                  }
                   <h6>Rate: {movie.vote_average}/10</h6>
-                  <h6>Time: {movie.runtime} mins</h6>
-                  <h6>Languages: {movie.spoken_languages.map(data =>
-                    data.name
-                  ).join(', ')}</h6>
+                  {movie.runtime === null ? ('') :
+                    <h6>Time: {movie.runtime} mins</h6>
+                  }
+                  {movie.spoken_languages.length !==0 &&
+                    <h6>Languages: {movie.spoken_languages.map(data =>
+                      data.name
+                    ).join(', ')}</h6>
+                  }
                   <h6>Overview: <br/>{movie.overview}</h6>
                   {
                     (videos !== null  && videos.length !== 0) &&
@@ -161,7 +173,6 @@ class CurrentOrUpcmoingMovies extends Component {
                 </Col>
               </Row>
             </Modal.Body>
-
           </Modal>
         }
       </Well>
@@ -169,4 +180,12 @@ class CurrentOrUpcmoingMovies extends Component {
   }
 }
 
-export default CurrentOrUpcmoingMovies;
+const mapStateToProps = (state)=>({
+  ...state
+})
+
+const mapDispatchToProps = (dispatch) =>{
+  return bindActionCreators(actions,dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MoviesList);

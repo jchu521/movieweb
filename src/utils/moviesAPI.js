@@ -3,8 +3,8 @@ import C from '../constants';
 const movieURL = C.URL + 'movie/';
 
 //GET /movie/now_playing
-export const getNowPlaying = () => {
-  let url = movieURL + 'now_playing?api_key=' + C.API_KEY + '&page=1&region=au';
+export const getNowPlayingAPI = (page) => {
+  let url = movieURL + 'now_playing?api_key=' + C.API_KEY + '&page='+ page +'&region=au';
 
   return fetch(url, C.headers).then(C.parseResponse).catch(C.logError);
 }
@@ -17,7 +17,7 @@ export const getMovie = (movieId) => {
 }
 
 //GET /movie/upcoming
-export const getUpcoming = () => {
+export const getUpcomingAPI = () => {
   let url = movieURL + "upcoming?api_key=" + C.API_KEY + '&page=1&region=au';
 
   return fetch(url, C.headers).then(C.parseResponse).catch(C.logError);

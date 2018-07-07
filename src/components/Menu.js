@@ -10,6 +10,7 @@ import {
   FormControl,
   InputGroup,
   Button,
+  Badge
 } from 'react-bootstrap';
 import * as actions from '../actions/index';
 import { bindActionCreators } from 'redux';
@@ -19,20 +20,28 @@ class Menu extends Component {
 
   state = {
     movies: null,
+    found: false
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.movies.message ==='Not Found'){
+      this.setState({found: true})
+    }else if(nextProps.movies.message ==='Found'){
+      this.setState({found: false})
+    }
   }
 
   onSearch = () => {
     const {searchByMovieName} = this.props;
     let query = document.getElementById('search').value;
 
-    searchByMovieName(query);
-    // .then( data =>
-    //   this.setState({ movies: data.results})
-    // );
+    if(query.length !== 0 ){
+      this.setState({found: false});
+      searchByMovieName(query, 1);
+    }
   }
 
   render() {
-    console.log(this.props);
     return (
       <Navbar inverse collapseOnSelect>
         <Navbar.Header>
@@ -43,25 +52,20 @@ class Menu extends Component {
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav>
-            <NavItem eventKey={1} href="#">
-              Link
-            </NavItem>
-            <NavDropdown title="C" id="basic-nav-dropdown">
-              <MenuItem eventKey={3.1}>Action</MenuItem>
-              <MenuItem eventKey={3.2}>Another action</MenuItem>
-              <MenuItem eventKey={3.3}>Something else here</MenuItem>
-              <MenuItem divider />
-              <MenuItem eventKey={3.3}>Separated link</MenuItem>
-            </NavDropdown>
+            <NavItem eventKey={1} href="#">Movies</NavItem>
+            <NavItem eventKey={2} href="#">TV Shows</NavItem>
           </Nav>
           <Navbar.Form pullRight>
             <FormGroup>
               <InputGroup>
                 <FormControl id='search' type="text" placeholder="Search Movies" />
                 <InputGroup.Button>
-                  <Button type='submit' onClick={() => this.onSearch()}>Search</Button>
+                  <Button type='submit' bsStyle={!this.state.found ? 'default':'danger'} onClick={() => this.onSearch()}>
+                    Search
+                  </Button>
                 </InputGroup.Button>
               </InputGroup>
+              {this.state.found && <Badge>Not Found</Badge>}
             </FormGroup>{' '}
           </Navbar.Form>
         </Navbar.Collapse>

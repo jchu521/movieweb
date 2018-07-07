@@ -6,8 +6,8 @@ const constants = {
     "Authorization": 'whatever-you-want',
   },
 
-  SEARCH_MOVIE_BY_NAME: 'SEARCH_MOVIE_BY_NAME',
-  
+  GET_MOVIES: 'GET_MOVIES',
+
   API_KEY: '149303c5a88a0b233820a85576006085',
   URL: `https://api.themoviedb.org/${API_VERSION}/`,
   Image_URL: 'https://image.tmdb.org/t/p/original',

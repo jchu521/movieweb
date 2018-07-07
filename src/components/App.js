@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
-import CurrentOrUpcmoingMovies from './CurrentOrUpcomingMovies';
+import MoviesList from './MoviesList';
 import Menu from './Menu';
 import { connect } from 'react-redux';
 
 class App extends Component {
 
   render() {
+    const { movies } = this.props.movies;
     return (
       <div>
         <Menu />
-        <CurrentOrUpcmoingMovies />
+        <MoviesList />
       </div>
     );
   }
