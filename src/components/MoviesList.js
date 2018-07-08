@@ -76,7 +76,7 @@ class MoviesList extends Component {
     console.log(this);
 
     return (
-      <Well className="App">
+      <Well className="App" style={{margin:20}}>
         {!search  &&
           <Row style={{ paddingBottom: 20}}>
             <Col xs={1}>

@@ -7,6 +7,8 @@ const constants = {
   },
 
   GET_MOVIES: 'GET_MOVIES',
+  
+  GET_TV_SHOWS:'GET_TV_SHOWS',
 
   API_KEY: '149303c5a88a0b233820a85576006085',
   URL: `https://api.themoviedb.org/${API_VERSION}/`,

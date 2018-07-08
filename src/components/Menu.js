@@ -41,7 +41,6 @@ class Menu extends Component {
   }
 
   render() {
-    console.log(this);
     return (
       <Navbar inverse collapseOnSelect>
         <Navbar.Header>
