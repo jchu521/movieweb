@@ -7,9 +7,12 @@ const constants = {
   },
 
   GET_MOVIES: 'GET_MOVIES',
-  
-  GET_TV_SHOWS:'GET_TV_SHOWS',
+  GET_LATEST_MOVIES: 'GET_LATEST_MOVIES',
+  GET_TOP_RATED_MOVIES: 'GET_TOP_RATED_MOVIES',
 
+  GET_TV_SHOWS:'GET_TV_SHOWS',
+  GET_TOP_RATED_TV_SHOWS: 'GET_TOP_RATED_TV_SHOWS',
+  
   API_KEY: '149303c5a88a0b233820a85576006085',
   URL: `https://api.themoviedb.org/${API_VERSION}/`,
   Image_URL: 'https://image.tmdb.org/t/p/original',

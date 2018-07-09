@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import * as actions from '../actions/index';
 import { bindActionCreators } from 'redux';
 
-class MostPopular extends Component {
+class TopRated extends Component {
 
   state = {
     isTVReady: false,
@@ -20,8 +20,8 @@ class MostPopular extends Component {
   }
 
   componentDidMount(){
-    this.props.getMostPopularTVShows();
-    this.props.getMostPopularMovies();
+    this.props.getTopRatedTVShows();
+    this.props.getTopRatedMovies();
     window.addEventListener("resize", this.resize.bind(this));
     this.resize();
   }
@@ -70,25 +70,25 @@ class MostPopular extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    if(nextProps.tvShows.message ==='Not Found'){
+    if(nextProps.tvShows.tvTopRatedTV.total_results === 0){
       this.setState({isTVReady: false})
-    }else if(nextProps.tvShows.message ==='Found'){
+    }else if(nextProps.tvShows.tvTopRatedTV.total_results > 0){
       this.setState({
         isTVReady: true,
-        tvShows1: nextProps.tvShows.tvShows.results.slice(0,5),
-        tvShows2: nextProps.tvShows.tvShows.results.slice(5,10),
-        tvShows3: nextProps.tvShows.tvShows.results.slice(10,15)
+        tvShows1: nextProps.tvShows.tvTopRatedTV.results.slice(0,5),
+        tvShows2: nextProps.tvShows.tvTopRatedTV.results.slice(5,10),
+        tvShows3: nextProps.tvShows.tvTopRatedTV.results.slice(10,15)
       })
     }
 
-    if(nextProps.movies.message ==='Not Found'){
+    if(nextProps.movies.topRatedMovies.total_results === 0){
       this.setState({isMoviesReady: false})
-    }else if(nextProps.movies.message ==='Found'){
+    }else if(nextProps.movies.topRatedMovies.total_results !== 0){
       this.setState({
         isMoviesReady: true,
-        movies1: nextProps.movies.movies.results.slice(0,5),
-        movies2: nextProps.movies.movies.results.slice(5,10),
-        movies3: nextProps.movies.movies.results.slice(10,15)
+        movies1: nextProps.movies.topRatedMovies.results.slice(0,5),
+        movies2: nextProps.movies.topRatedMovies.results.slice(5,10),
+        movies3: nextProps.movies.topRatedMovies.results.slice(10,15)
       })
     }
   }
@@ -96,16 +96,16 @@ class MostPopular extends Component {
   render() {
     const { isTVReady, isMoviesReady, isXsScreen, tvShow, show, videos, movie } = this.state;
     const { tvShows, movies } = this.props;
-    // console.log(this);
+    console.log(this);
     return (
       <Well className="App" style={{margin:20}}>
-        <h3>Most Popular</h3>
+        <h3>Top Rate</h3>
         <h6>TV Shows</h6>
         <Row>
             {isXsScreen ?
               (
                 <Carousel interval={10000}>
-                  {  isTVReady &&  tvShows.tvShows.results.map( (tvShow,i) =>
+                  {  isTVReady &&  tvShows.tvTopRatedTV.results.map( (tvShow,i) =>
                     <Carousel.Item key={tvShow.id}>
                     <Col  >
                       <Button style={{width:'100%'}} onClick={() => this.handleShow(tvShow.id, false)} >
@@ -225,7 +225,7 @@ class MostPopular extends Component {
             {isXsScreen ?
               (
                 <Carousel interval={10000}>
-                  {  isMoviesReady &&  movies.movies.results.map( (movie,i) =>
+                  {  isMoviesReady &&  movies.topRatedMovies.results.map( (movie,i) =>
                     <Carousel.Item key={movie.id}>
                     <Col  style={{padding:10}}>
                       <Button style={{width:'100%'}} onClick={() => this.handleShow(movie.id, true)} >
@@ -451,4 +451,4 @@ const mapDispatchToProps = (dispatch) =>{
   return bindActionCreators(actions,dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MostPopular);
+export default connect(mapStateToProps, mapDispatchToProps)(TopRated);

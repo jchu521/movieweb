@@ -22,3 +22,10 @@ export const getTVShowVideos = (id) =>{
 
   return fetch(url, C.headers).then(C.parseResponse).catch(C.logError);
 }
+
+//GET /tv/top_rated
+export const getTopRatedTVShowsAPI = () =>{
+  const url = `${tvURL}top_rated?api_key=${C.API_KEY}`;
+
+  return fetch(url, C.headers).then(C.parseResponse).catch(C.logError);
+}

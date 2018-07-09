@@ -1,5 +1,11 @@
 import { searchByMovieNameAPI } from '../utils/searchAPI';
-import { getNowPlayingAPI, getUpcomingAPI, getLatestMoviesAPI, getMostPopularMoviesAPI } from '../utils/moviesAPI';
+import {
+  getTopRatedMoviesAPI,
+  getNowPlayingAPI,
+  getUpcomingAPI,
+  getLatestMoviesAPI,
+  getMostPopularMoviesAPI
+} from '../utils/moviesAPI';
 
 import C from '../constants';
 
@@ -43,7 +49,7 @@ export const getUpcoming = (page) => (dispatch) => {
 export const getLatestMovies = () => (dispatch) => {
   return getLatestMoviesAPI().then( data => {
     dispatch({
-      type: C.GET_MOVIES,
+      type: C.GET_LATEST_MOVIES,
       movies: data,
       search: false
     })
@@ -55,6 +61,17 @@ export const getMostPopularMovies = () => (dispatch) => {
   return getMostPopularMoviesAPI().then( data => {
     dispatch({
       type: C.GET_MOVIES,
+      movies: data,
+      search: false
+    })
+  });
+}
+
+//GET /movie/top_rated
+export const getTopRatedMovies = () => (dispatch) =>{
+  return getTopRatedMoviesAPI().then( data => {
+    dispatch({
+      type: C.GET_TOP_RATED_MOVIES,
       movies: data,
       search: false
     })

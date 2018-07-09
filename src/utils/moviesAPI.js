@@ -43,3 +43,10 @@ export const getMostPopularMoviesAPI = () => {
 
   return fetch(url, C.headers).then(C.parseResponse).catch(C.logError);
 }
+
+//GET /movie/top_rated
+export const getTopRatedMoviesAPI = () => {
+  let url = `${movieURL}top_rated?api_key=${C.API_KEY}&region=au`;
+
+  return fetch(url, C.headers).then(C.parseResponse).catch(C.logError);
+}

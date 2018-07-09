@@ -73,7 +73,6 @@ class MoviesList extends Component {
   render() {
     const { isReady, movie, isShow, show, videos } = this.state;
     const { search } = this.props.movies;
-    console.log(this);
 
     return (
       <Well className="App" style={{margin:20}}>
@@ -103,13 +102,13 @@ class MoviesList extends Component {
                       style={{
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
-                        height: 400,
+                        height: 300,
                         width: '100%',
                       }}
                       src={C.Image_URL + movie.poster_path} alt={movie.title}/>
                       :
                     <h6 style={{
-                      height: 390,
+                      height: 290,
                       width:'100%',
                       textAlign:'center',
                     }}> No image found </h6>
