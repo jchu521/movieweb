@@ -10,37 +10,17 @@ import {
   Button,
   Badge
 } from 'react-bootstrap';
-import * as actions from '../actions/index';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 class Menu extends Component {
 
   state = {
-    movies: null,
-    found: false
-  }
-
-  componentWillReceiveProps(nextProps){
-    if(nextProps.movies.message ==='Not Found'){
-      this.setState({found: true})
-    }else if(nextProps.movies.message ==='Found'){
-      this.setState({found: false})
-    }
-  }
-
-  onSearch = () => {
-    const {searchByMovieName} = this.props;
-    let query = document.getElementById('search').value;
-
-    if(query.length !== 0 ){
-      this.setState({found: false});
-      searchByMovieName(query, 1);
-    }
+    found: false,
+    query:'',
   }
 
   render() {
+    // console.log(this);
     return (
       <Navbar inverse collapseOnSelect>
         <Navbar.Header>
@@ -52,16 +32,18 @@ class Menu extends Component {
         <Navbar.Collapse>
           <Nav>
             <NavItem  componentClass={Link}  href="/movies" to="/Movies" eventKey={1} >Movies</NavItem>
-            <NavItem eventKey={2} href="#">TV Shows</NavItem>
+            <NavItem  componentClass={Link}  href="/TVShows" to="/tvshows" eventKey={2} >TV Shows</NavItem>
           </Nav>
           <Navbar.Form pullRight>
             <FormGroup>
               <InputGroup>
-                <FormControl id='search' type="text" placeholder="Search Movies" />
+                <FormControl id='search' value={this.state.query} type="text" placeholder="Search Movies or TV Shows" onChange={(e)=> this.setState({query: e.target.value})}/>
                 <InputGroup.Button>
-                  <Button type='submit' bsStyle={!this.state.found ? 'default':'danger'} onClick={() => this.onSearch()}>
-                    Search
-                  </Button>
+                  <Link to={`/search/${this.state.query}`} >
+                    <Button type='submit' bsStyle={!this.state.found ? 'default':'danger'} onClick={() => this.setState({query: ''})}>
+                      Search
+                    </Button>
+                  </Link>
                 </InputGroup.Button>
               </InputGroup>
               {this.state.found && <Badge>Not Found</Badge>}
@@ -73,12 +55,4 @@ class Menu extends Component {
   }
 }
 
-const mapStateToProps = (state)=>({
-  ...state
-})
-
-const mapDispatchToProps = (dispatch) =>{
-  return bindActionCreators(actions,dispatch)
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Menu);
+export default (Menu);

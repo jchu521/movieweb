@@ -12,31 +12,52 @@ class PagesButton extends Component {
   }
 
   componentDidMount(){
-    const { total_pages } = this.props.movies.movies;
+    const { isMovies } = this.props;
 
     buttonArray=[];
-
-    for(let i =1; i < total_pages+1; i++){
-       buttonArray.push(<Button onClick={() => this.tooglePage(i)} key={i} >{i}</Button>)
-       this.setState({
-         isReady: true,
-       })
+    if(isMovies){
+      buttonArray=[];
+      for(let i =1; i <  this.props.movies.movies.total_pages+1; i++){
+         buttonArray.push(<Button onClick={() => this.tooglePage(i)} key={i} >{i}</Button>)
+         this.setState({
+           isReady: true,
+         })
+      }
+    }else if(!isMovies){
+      buttonArray=[];
+      for(let i =1; i <  this.props.tvShows.tvShows.total_pages+1; i++){
+         buttonArray.push(<Button onClick={() => this.tooglePage(i)} key={i} >{i}</Button>)
+         this.setState({
+           isReady: true,
+         })
+      }
     }
+
   }
 
   tooglePage = (page) => {
-    const {isShowing} = this.props;
-
-    if(this.props.movies.search){
-      this.props.searchByMovieName(this.props.movies.query , page)
-    }else if(isShowing && !this.props.movies.search){
-      this.props.getNowPlaying(page);
-    }else if(!isShowing && !this.props.movies.search){
-      this.props.getUpcoming(page);
+    const {isShowing, isMovies } = this.props;
+    if(isMovies){
+      if(this.props.movies.search){
+        this.props.searchByMovieName(this.props.movies.query , page)
+      }else if(isShowing && !this.props.movies.search){
+        this.props.getNowPlaying(page);
+      }else if(!isShowing && !this.props.movies.search){
+        this.props.getUpcoming(page);
+      }
+    }else if(!isMovies){
+      if(this.props.tvShows.search){
+        this.props.searchByMovieName(this.props.tvShows.query , page)
+      }else if(isShowing && !this.props.tvShows.search){
+        this.props.getOnAirTVShows(page);
+      }else if(!isShowing && !this.props.tvShows.search){
+        this.props.getAiringTodayTVShows(page);
+      }
     }
   }
 
   render() {
+    console.log(this);
     return (
       <Row>
         <ButtonGroup>

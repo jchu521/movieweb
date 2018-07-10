@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../App.css';
 import { getMovie, getMovieVideos } from '../utils/moviesAPI';
+import { getTVShow, getTVShowVideos } from '../utils/TVShowsAPI';
 import PagesButton from '../utils/pagesButton';
 import { Well, Row, Col, Button, Modal, ButtonGroup } from 'react-bootstrap';
 import C from '../constants';
@@ -8,44 +9,44 @@ import { connect } from 'react-redux';
 import * as actions from '../actions/index';
 import { bindActionCreators } from 'redux';
 
-class MoviesList extends Component {
+class TVShowsList extends Component {
 
   state = {
     isReady: false,
     show:false,
-    movie: null,
+    tvShow: null,
     genres: null,
     isShow: true,
     videos: null,
   }
 
   componentDidMount(){
-    this.props.getNowPlaying();
+    this.props.getOnAirTVShows();
   }
 
   componentWillReceiveProps(nextProps){
-    if(nextProps.movies.message ==='Not Found'){
+    if(nextProps.tvShows.message ==='Not Found'){
       this.setState({isReady: false})
-    }else if(nextProps.movies.message ==='Found'){
+    }else if(nextProps.tvShows.message ==='Found'){
       this.setState({isReady: true})
     }
   }
 
   handleClose = () => {
     this.setState({
-      movie: null,
+      tvShow: null,
       show: false,
       videos: null
     });
   }
 
-  handleShow = (movieId) => {
-    getMovie(movieId).then((data) =>
+  handleShow = (id) => {
+    getTVShow(id).then((data) =>
       this.setState({
-        movie: data,
+        tvShow: data,
       })
     ).then( () =>
-      getMovieVideos(movieId).then( (d) =>
+      getTVShowVideos(id).then( (d) =>
         this.setState({
           videos: d.results.map(v => C.Youtube_URL + v.key),
           show: true,
@@ -57,23 +58,23 @@ class MoviesList extends Component {
   handleGetMovies = (type) => {
     switch (type) {
       case 'Now':
-        this.props.getNowPlaying();
+        this.props.getOnAirTVShows();
         this.setState({isShow: true, isReady: false})
         break;
       case 'Coming':
-        this.props.getUpcoming();
+        this.props.getAiringTodayTVShows();
         this.setState({isShow: false, isReady: false})
         break
       default:
-        this.props.getNowPlaying();
+        this.props.getOnAirTVShows();
         break;
     }
   }
 
   render() {
-    const { isReady, movie, isShow, show, videos } = this.state;
-    const { search } = this.props.movies;
-
+    const { isReady, tvShow, isShow, show, videos } = this.state;
+    const { tvShows } = this.props.tvShows;
+    console.log(this);
     return (
       <Well className="App" style={{margin:20}}>
           <Row style={{ paddingBottom: 20}}>
@@ -84,18 +85,19 @@ class MoviesList extends Component {
             </Col>
             <Col xs={6} xsOffset={2}>
           <ButtonGroup >
-            <Button bsStyle={ isShow ? 'primary' : 'default' } onClick={() => this.handleGetMovies('Now')}>Now Showing</Button>
-            <Button bsStyle={ isShow ? 'default' : 'primary' } onClick={() => this.handleGetMovies('Coming')}>Coming Soon</Button>
+            <Button bsStyle={ isShow ? 'primary' : 'default' } onClick={() => this.handleGetMovies('Now')}>On Air</Button>
+            <Button bsStyle={ isShow ? 'default' : 'primary' } onClick={() => this.handleGetMovies('Coming')}>New</Button>
           </ButtonGroup>
           </Col>
           </Row>
+
         <Row>
           {
-            (isReady && this.props.movies.movies.success !== false) && this.props.movies.movies.results.map(movie =>
-              <Col style={{ paddingBottom: 80}} xs={12} sm={4} md={3} lg={2} key={movie.id}>
-                <Button style={{width:'100%'}} onClick={() => this.handleShow(movie.id)}>
-                  <h6>{movie.title}</h6>
-                  {movie.poster_path !== null ?
+            (isReady && tvShows.success !== false) && tvShows.results.map(tvShow =>
+              <Col style={{ paddingBottom: 80}} xs={12} sm={4} md={3} lg={2} key={tvShow.id}>
+                <Button style={{width:'100%'}} onClick={() => this.handleShow(tvShow.id)}>
+                  <h6>{tvShow.name}</h6>
+                  {tvShow.poster_path !== null ?
                     <img
                       style={{
                         backgroundSize: 'cover',
@@ -103,7 +105,7 @@ class MoviesList extends Component {
                         height: 300,
                         width: '100%',
                       }}
-                      src={C.Image_URL + movie.poster_path} alt={movie.title}/>
+                      src={C.Image_URL + tvShow.poster_path} alt={tvShow.name}/>
                       :
                     <h6 style={{
                       height: 290,
@@ -116,24 +118,24 @@ class MoviesList extends Component {
             )
           }
         </Row>
-        {(isReady && this.props.movies.movies.total_pages !==1) &&
-          <PagesButton isShowing={this.state.isShow} isMovies={true}/>
+        {(isReady && tvShows.total_pages !==1) &&
+          <PagesButton isShowing={this.state.isShow} isMovies={false}/>
         }
-        {(movie !== null) &&
+        {(tvShow !== null) &&
           <Modal show={show} onHide={this.handleClose} bsSize="large">
             <Modal.Header closeButton>
-              <Modal.Title style={{textAlign: "center"}}>{movie.title}</Modal.Title>
+              <Modal.Title style={{textAlign: "center"}}>{tvShow.original_name}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Row>
                 <Col xs={6}>
-                  {movie.backdrop_path !== null ?
+                  {tvShow.backdrop_path !== null ?
                     <img
                       style={{
                         height: 400,
                         width: '100%',
                       }}
-                      src={C.Image_URL + movie.backdrop_path} alt={movie.title}/>
+                      src={C.Image_URL + tvShow.backdrop_path} alt={tvShow.title}/>
                     :
                     <h6 style={{
                       height: 400,
@@ -143,22 +145,14 @@ class MoviesList extends Component {
                   }
                 </Col>
                 <Col xs={6}>
-                  <h6>Release Date: {movie.release_date}</h6>
-                  {movie.genres.length !==0 &&
-                    <h6>Genres: {movie.genres.map( data =>
+                  <h6>Number of seasons: {tvShow.number_of_seasons}</h6>
+                  {tvShow.genres.length !==0 &&
+                    <h6>Genres: {tvShow.genres.map( data =>
                       data.name
                     ).join(', ')}</h6>
                   }
-                  <h6>Rate: {movie.vote_average}/10</h6>
-                  {movie.runtime === null ? ('') :
-                    <h6>Time: {movie.runtime} mins</h6>
-                  }
-                  {movie.spoken_languages.length !==0 &&
-                    <h6>Languages: {movie.spoken_languages.map(data =>
-                      data.name
-                    ).join(', ')}</h6>
-                  }
-                  <h6>Overview: <br/>{movie.overview}</h6>
+                  <h6>Rate: {tvShow.vote_average}/10</h6>
+                  <h6>Overview: <br/>{tvShow.overview}</h6>
                   {
                     (videos !== null  && videos.length !== 0) &&
                       <h6>Trials:<br />
@@ -185,4 +179,4 @@ const mapDispatchToProps = (dispatch) =>{
   return bindActionCreators(actions,dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MoviesList);
+export default connect(mapStateToProps, mapDispatchToProps)(TVShowsList);

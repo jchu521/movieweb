@@ -60,6 +60,7 @@ class TopRated extends Component {
     }
 
   }
+  
   handleClose = () => {
     this.setState({
       tvShow: null,
@@ -70,9 +71,9 @@ class TopRated extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    if(nextProps.tvShows.tvTopRatedTV.total_results === 0){
+    if(nextProps.tvShows.message1 === 'Not Found'){
       this.setState({isTVReady: false})
-    }else if(nextProps.tvShows.tvTopRatedTV.total_results > 0){
+    }else if(nextProps.tvShows.message1 === 'Found'){
       this.setState({
         isTVReady: true,
         tvShows1: nextProps.tvShows.tvTopRatedTV.results.slice(0,5),
@@ -96,7 +97,7 @@ class TopRated extends Component {
   render() {
     const { isTVReady, isMoviesReady, isXsScreen, tvShow, show, videos, movie } = this.state;
     const { tvShows, movies } = this.props;
-    console.log(this);
+    // console.log(this);
     return (
       <Well className="App" style={{margin:20}}>
         <h3>Top Rate</h3>

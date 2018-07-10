@@ -29,3 +29,17 @@ export const getTopRatedTVShowsAPI = () =>{
 
   return fetch(url, C.headers).then(C.parseResponse).catch(C.logError);
 }
+
+//GET /tv/on_the_air
+export const getOnAirTVShowsAPI = (page) =>{
+  const url = `${tvURL}on_the_air?api_key=${C.API_KEY}&page=${page}`;
+
+  return fetch(url, C.headers).then(C.parseResponse).catch(C.logError);
+}
+
+//GET /tv/airing_today
+export const getAiringTodayTVShowsAPI = (page) =>{
+  const url = `${tvURL}airing_today?api_key=${C.API_KEY}&page=${page}`;
+
+  return fetch(url, C.headers).then(C.parseResponse).catch(C.logError);
+}

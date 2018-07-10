@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import MoviesList from './MoviesList';
+import TVShowsList from './TVShowsList';
+import SearchResults from './SearchResults';
 import Menu from './Menu';
 import Home from './Home';
 import { connect } from 'react-redux';
@@ -16,6 +18,15 @@ class App extends Component {
             <Route
               path="/movies"
               component={MoviesList}
+            />
+            <Route
+              path="/tvshows"
+              component={TVShowsList}
+            />
+            <Route
+              exact
+              path="/search/:query"
+              component={SearchResults}
             />
           </Switch>
       </div >
