@@ -72,7 +72,6 @@ class MoviesList extends Component {
 
   render() {
     const { isReady, movie, isShow, show, videos } = this.state;
-    const { search } = this.props.movies;
 
     return (
       <Well className="App" style={{margin:20}}>

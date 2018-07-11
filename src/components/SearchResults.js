@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../App.css';
 import { getMovie, getMovieVideos } from '../utils/moviesAPI';
 import { getTVShow, getTVShowVideos } from '../utils/TVShowsAPI';
-import { Well, Row, Col, Button, Modal, Carousel } from 'react-bootstrap';
+import { Well, Row, Col, Button, Modal } from 'react-bootstrap';
 import C from '../constants';
 import { connect } from 'react-redux';
 import * as actions from '../actions/index';

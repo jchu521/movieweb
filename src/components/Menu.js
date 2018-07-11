@@ -34,14 +34,14 @@ class Menu extends Component {
       <Navbar inverse collapseOnSelect>
         <Navbar.Header>
           <Navbar.Brand>
-            <Link  to="/">MovieDB</Link>
+            <Link  to="/movieweb">MovieDB</Link>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav>
-            <NavItem  componentClass={Link}  href="/movies" to="/Movies" eventKey={1} >Movies</NavItem>
-            <NavItem  componentClass={Link}  href="/TVShows" to="/tvshows" eventKey={2} >TV Shows</NavItem>
+            <NavItem  componentClass={Link}  href="/movies" to="/movieweb/Movies" eventKey={1} >Movies</NavItem>
+            <NavItem  componentClass={Link}  href="/TVShows" to="/movieweb/tvshows" eventKey={2} >TV Shows</NavItem>
           </Nav>
           <Navbar.Form pullRight>
             <FormGroup>

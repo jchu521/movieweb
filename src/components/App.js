@@ -14,18 +14,18 @@ class App extends Component {
       <div >
         <Menu />
           <Switch>
-            <Route exact path='/' component={Home} />
+            <Route exact path='/movieweb/' component={Home} />
             <Route
-              path="/movies"
+              path="/movieweb/movies"
               component={MoviesList}
             />
             <Route
-              path="/tvshows"
+              path="/movieweb/tvshows"
               component={TVShowsList}
             />
             <Route
               exact
-              path="/search/:query"
+              path="/movieweb/search/:query"
               component={SearchResults}
             />
           </Switch>

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import '../App.css';
-import { getMovie, getMovieVideos } from '../utils/moviesAPI';
 import { getTVShow, getTVShowVideos } from '../utils/TVShowsAPI';
 import PagesButton from '../utils/pagesButton';
 import { Well, Row, Col, Button, Modal, ButtonGroup } from 'react-bootstrap';
