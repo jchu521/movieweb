@@ -17,8 +17,17 @@ class Menu extends Component {
   state = {
     found: false,
     query:'',
+    disabled: true,
   }
 
+  componentDidUpdate(prevProps, prevState){
+    if(prevState.query !== '' && prevState.disabled){
+      this.setState({disabled: false});
+    }
+    if(prevState.query === '' && !prevState.disabled){
+      this.setState({disabled: true});
+    }
+  }
   render() {
     // console.log(this);
     return (
@@ -37,10 +46,10 @@ class Menu extends Component {
           <Navbar.Form pullRight>
             <FormGroup>
               <InputGroup>
-                <FormControl id='search' value={this.state.query} type="text" placeholder="Search Movies or TV Shows" onChange={(e)=> this.setState({query: e.target.value})}/>
+                <FormControl id='search' value={this.state.query} type="text" placeholder="Search Movie or TV Show" onChange={(e)=> this.setState({query: e.target.value})}/>
                 <InputGroup.Button>
                   <Link to={`/search/${this.state.query}`} >
-                    <Button type='submit' bsStyle={!this.state.found ? 'default':'danger'} onClick={() => this.setState({query: ''})}>
+                    <Button disabled={this.state.disabled} type='submit' bsStyle={!this.state.found ? 'default':'danger'} >
                       Search
                     </Button>
                   </Link>
