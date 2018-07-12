@@ -1,5 +1,6 @@
 # movieweb
-Tic Tac Toe mobile game is built with React Native.
+Movieweb is built with React.
+Used [The Movie Database (TMDb) API](https://developers.themoviedb.org/3).
 
 ## Features
 
@@ -24,6 +25,7 @@ Tic Tac Toe mobile game is built with React Native.
 ## Screens
 ![image](https://github.com/jchu521/movieweb/blob/master/images/Demo.png)
 
+## MovieDB API
 
 ## Libraries
 
