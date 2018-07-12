@@ -14,7 +14,7 @@ Used [The Movie Database (TMDb) API](https://developers.themoviedb.org/3).
 * Sort by A-Z, Z-A, rate
 
 ## Demo
-* [movieWeb](https://jchu521.github.io/movieweb/tvshows)
+* [movieWeb](https://jchu521.github.io/movieweb)
 
 ## Installation
 `npm install`
@@ -24,8 +24,6 @@ Used [The Movie Database (TMDb) API](https://developers.themoviedb.org/3).
 
 ## Screens
 ![image](https://github.com/jchu521/movieweb/blob/master/images/Demo.png)
-
-## MovieDB API
 
 ## Libraries
 
